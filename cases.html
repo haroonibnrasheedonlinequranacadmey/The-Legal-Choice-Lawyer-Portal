@@ -1,1 +1,1193 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>My Cases | The Legal Choice Portal</title><link rel="stylesheet" href="portal.css"></head><body onload="protectPortal()"><div class="portal"><aside class="side"><a class="portal-brand" href="dashboard.html"><img src="assets/logo.png" alt="Logo"><div><strong>The Legal Choice</strong><small>JUSTICE · TRUST · SUPPORT</small></div></a><div class="user-mini"><img class="avatar" src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=100&q=80"><div><strong>Adv. Safi ur Rehman</strong><span>● Online · Lawyer</span></div></div><div class="navtitle">Main Menu</div><a class="" href="dashboard.html"><i class="ico">▣</i><span>Dashboard</span></a><a class="active" href="cases.html"><i class="ico">▤</i><span>My Cases</span></a><a class="" href="clients.html"><i class="ico">♙</i><span>Clients</span></a><a class="" href="appointments.html"><i class="ico">◫</i><span>Appointments</span></a><a class="" href="messages.html"><i class="ico">✉</i><span>Messages</span></a><a class="" href="documents.html"><i class="ico">▧</i><span>Documents</span></a><a class="" href="profile.html"><i class="ico">◉</i><span>Profile</span></a><a class="" href="settings.html"><i class="ico">⚙</i><span>Settings</span></a><div class="navtitle">Account</div><a href="index.html"><i class="ico">⌂</i><span>Public Website</span></a><a href="#" onclick="portalLogout();return false"><i class="ico">↪</i><span>Logout</span></a></aside><main class="main"><header class="topbar"><div class="search">⌕ <input placeholder="Search cases, clients, appointments..."></div><div class="top-actions"><span class="bell">♧<b>3</b></span><a class="top-user" href="profile.html"><img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=100&q=80"><div><strong>Haroon Ibn Rasheed</strong><br><span class="muted">Lawyer</span></div></a></div></header><div class="content"><div class="heading"><div><h1>My Cases</h1><p class="muted">Track every matter, status and important date.</p></div><a class="btn gold" href="#">＋ Add New Case</a></div><section class="panel"><div class="panelhead"><h2>All Cases · 12</h2><div><select style="padding:7px;border:1px solid #e4e9ef;border-radius:6px;font-size:10px"><option>All Status</option><option>In Progress</option><option>Pending</option><option>Closed</option></select></div></div><div class="tablewrap"><table class="table"><thead><tr><th>Case ID</th><th>Client Name</th><th>Case Type</th><th>Status</th><th>Date</th><th>Action</th></tr></thead><tbody><tr><td>#C001</td><td>Ayesha Khan</td><td>Family Law</td><td><span class="badge blue">In Progress</span></td><td>2026-09-18</td><td>⋮</td></tr><tr><td>#C002</td><td>Ali Raza</td><td>Criminal Law</td><td><span class="badge purple">Hearing</span></td><td>2026-09-16</td><td>⋮</td></tr><tr><td>#C003</td><td>Sara Malik</td><td>Civil Litigation</td><td><span class="badge orange">Pending</span></td><td>2026-09-20</td><td>⋮</td></tr><tr><td>#C004</td><td>Usman Ahmed</td><td>Corporate Law</td><td><span class="badge blue">In Progress</span></td><td>2026-09-17</td><td>⋮</td></tr><tr><td>#C005</td><td>Fatima Noor</td><td>Family Law</td><td><span class="badge green">Closed</span></td><td>2026-09-12</td><td>⋮</td></tr></tbody></table></div></section></div></main></div><div class="mobilebar"><a class="btn" href="dashboard.html">Dashboard</a><a class="btn gold" href="portal-login.html" onclick="portalLogout()">Logout</a></div><script src="portal.js"></script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title>My Cases | The Legal Choice Portal</title>
+
+<link rel="stylesheet" href="portal.css">
+
+<style>
+/* =========================
+   CASES PAGE
+========================= */
+
+.case-toolbar{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    align-items:center;
+}
+
+.case-toolbar input,
+.case-toolbar select{
+    padding:10px 12px;
+    border:1px solid #dfe5ec;
+    border-radius:7px;
+    background:#fff;
+    font-size:13px;
+    outline:none;
+}
+
+.case-toolbar input{
+    min-width:220px;
+}
+
+.case-toolbar input:focus,
+.case-toolbar select:focus{
+    border-color:#c5a44d;
+}
+
+.case-actions{
+    display:flex;
+    gap:6px;
+    justify-content:flex-end;
+}
+
+.icon-btn{
+    width:34px;
+    height:34px;
+    border:1px solid #e2e6eb;
+    background:#fff;
+    border-radius:7px;
+    cursor:pointer;
+    font-size:15px;
+}
+
+.icon-btn:hover{
+    background:#f5f6f8;
+}
+
+.case-empty{
+    text-align:center;
+    padding:45px 20px;
+    color:#7b8490;
+}
+
+/* Modal */
+
+.modal{
+    position:fixed;
+    inset:0;
+    background:rgba(10,20,35,.55);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index:9999;
+    padding:20px;
+}
+
+.modal.show{
+    display:flex;
+}
+
+.modal-box{
+    width:min(900px,100%);
+    max-height:92vh;
+    overflow:auto;
+    background:#fff;
+    border-radius:12px;
+    box-shadow:0 20px 60px rgba(0,0,0,.25);
+}
+
+.modal-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:18px 22px;
+    border-bottom:1px solid #edf0f4;
+    position:sticky;
+    top:0;
+    background:#fff;
+    z-index:2;
+}
+
+.modal-head h2{
+    margin:0;
+    font-size:19px;
+}
+
+.close-btn{
+    border:0;
+    background:transparent;
+    font-size:26px;
+    cursor:pointer;
+    color:#555;
+}
+
+.modal-body{
+    padding:22px;
+}
+
+.form-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:16px;
+}
+
+.form-group{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+}
+
+.form-group.full{
+    grid-column:1/-1;
+}
+
+.form-group label{
+    font-size:12px;
+    font-weight:700;
+    color:#3e4650;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea{
+    width:100%;
+    box-sizing:border-box;
+    border:1px solid #dfe4ea;
+    border-radius:7px;
+    padding:10px 11px;
+    font-size:13px;
+    font-family:inherit;
+    outline:none;
+}
+
+.form-group textarea{
+    min-height:100px;
+    resize:vertical;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus{
+    border-color:#c5a44d;
+}
+
+.modal-footer{
+    display:flex;
+    justify-content:flex-end;
+    gap:10px;
+    padding:16px 22px;
+    border-top:1px solid #edf0f4;
+}
+
+/* Case Details */
+
+.detail-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:12px;
+    margin-bottom:20px;
+}
+
+.detail-box{
+    border:1px solid #e7ebef;
+    border-radius:8px;
+    padding:13px;
+    background:#fafbfc;
+}
+
+.detail-box small{
+    display:block;
+    color:#7d8792;
+    font-size:11px;
+    margin-bottom:5px;
+}
+
+.detail-box strong{
+    font-size:13px;
+    color:#202832;
+}
+
+.detail-section{
+    margin-top:22px;
+}
+
+.detail-section h3{
+    font-size:15px;
+    margin:0 0 10px;
+}
+
+.detail-text{
+    padding:14px;
+    border:1px solid #e6eaee;
+    border-radius:8px;
+    background:#fafbfc;
+    line-height:1.6;
+    font-size:13px;
+    color:#4c5661;
+}
+
+.timeline{
+    border-left:2px solid #d8dee5;
+    margin-left:8px;
+    padding-left:20px;
+}
+
+.timeline-item{
+    position:relative;
+    margin-bottom:18px;
+}
+
+.timeline-item:before{
+    content:"";
+    position:absolute;
+    width:10px;
+    height:10px;
+    border-radius:50%;
+    background:#c5a44d;
+    left:-27px;
+    top:4px;
+}
+
+.timeline-item strong{
+    font-size:13px;
+}
+
+.timeline-item p{
+    margin:4px 0 0;
+    font-size:12px;
+    color:#7a8490;
+}
+
+.status-select{
+    min-width:130px;
+}
+
+/* Responsive */
+
+@media(max-width:900px){
+
+    .form-grid{
+        grid-template-columns:1fr;
+    }
+
+    .form-group.full{
+        grid-column:auto;
+    }
+
+    .detail-grid{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .case-toolbar{
+        width:100%;
+    }
+
+    .case-toolbar input{
+        width:100%;
+        min-width:0;
+    }
+}
+
+@media(max-width:650px){
+
+    .detail-grid{
+        grid-template-columns:1fr;
+    }
+
+    .modal{
+        padding:8px;
+    }
+
+    .modal-box{
+        max-height:96vh;
+        border-radius:9px;
+    }
+
+    .modal-body{
+        padding:15px;
+    }
+
+    .modal-head,
+    .modal-footer{
+        padding:14px 15px;
+    }
+
+    .case-toolbar select{
+        width:100%;
+    }
+
+    .tablewrap{
+        overflow-x:auto;
+    }
+
+    .table{
+        min-width:720px;
+    }
+}
+</style>
+</head>
+
+<body onload="protectPortal();loadCases()">
+
+<div class="portal">
+
+<!-- =========================
+     SIDEBAR
+========================= -->
+
+<aside class="side">
+
+<a class="portal-brand" href="dashboard.html">
+    <img src="assets/logo.png" alt="Logo">
+    <div>
+        <strong>The Legal Choice</strong>
+        <small>JUSTICE · TRUST · SUPPORT</small>
+    </div>
+</a>
+
+<div class="user-mini">
+    <img class="avatar"
+         src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=100&q=80">
+
+    <div>
+        <strong>Adv. Safi ur Rehman</strong>
+        <span>● Online · Lawyer</span>
+    </div>
+</div>
+
+<div class="navtitle">Main Menu</div>
+
+<a href="dashboard.html">
+    <i class="ico">▣</i>
+    <span>Dashboard</span>
+</a>
+
+<a class="active" href="cases.html">
+    <i class="ico">▤</i>
+    <span>My Cases</span>
+</a>
+
+<a href="clients.html">
+    <i class="ico">♙</i>
+    <span>Clients</span>
+</a>
+
+<a href="appointments.html">
+    <i class="ico">◫</i>
+    <span>Appointments</span>
+</a>
+
+<a href="messages.html">
+    <i class="ico">✉</i>
+    <span>Messages</span>
+</a>
+
+<a href="documents.html">
+    <i class="ico">▧</i>
+    <span>Documents</span>
+</a>
+
+<a href="profile.html">
+    <i class="ico">◉</i>
+    <span>Profile</span>
+</a>
+
+<a href="settings.html">
+    <i class="ico">⚙</i>
+    <span>Settings</span>
+</a>
+
+<div class="navtitle">Account</div>
+
+<a href="index.html">
+    <i class="ico">⌂</i>
+    <span>Public Website</span>
+</a>
+
+<a href="#" onclick="portalLogout();return false">
+    <i class="ico">↪</i>
+    <span>Logout</span>
+</a>
+
+</aside>
+
+
+<!-- =========================
+     MAIN
+========================= -->
+
+<main class="main">
+
+<header class="topbar">
+
+<div class="search">
+    ⌕
+    <input id="topSearch"
+           placeholder="Search cases, clients, appointments..."
+           oninput="searchCases(this.value)">
+</div>
+
+<div class="top-actions">
+
+<span class="bell">
+    ♧<b>3</b>
+</span>
+
+<a class="top-user" href="profile.html">
+
+<img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=100&q=80">
+
+<div>
+<strong>Haroon Ibn Rasheed</strong>
+<br>
+<span class="muted">Lawyer</span>
+</div>
+
+</a>
+
+</div>
+
+</header>
+
+
+<div class="content">
+
+<!-- HEADING -->
+
+<div class="heading">
+
+<div>
+<h1>My Cases</h1>
+<p class="muted">
+Manage cases, hearings, clients, documents and case history.
+</p>
+</div>
+
+<button class="btn gold" onclick="openCaseForm()">
+＋ Add New Case
+</button>
+
+</div>
+
+
+<!-- STAT CARDS -->
+
+<div class="cards">
+
+<div class="statcard">
+<div>
+<span class="label">Total Cases</span>
+<strong id="totalCases">0</strong>
+</div>
+<div class="staticon">▣</div>
+</div>
+
+<div class="statcard">
+<div>
+<span class="label">Active Cases</span>
+<strong id="activeCases">0</strong>
+</div>
+<div class="staticon">✓</div>
+</div>
+
+<div class="statcard">
+<div>
+<span class="label">Pending Cases</span>
+<strong id="pendingCases">0</strong>
+</div>
+<div class="staticon">◷</div>
+</div>
+
+<div class="statcard">
+<div>
+<span class="label">Closed Cases</span>
+<strong id="closedCases">0</strong>
+</div>
+<div class="staticon">✓</div>
+</div>
+
+</div>
+
+
+<!-- CASE LIST -->
+
+<section class="panel">
+
+<div class="panelhead">
+
+<h2>All Cases</h2>
+
+<div class="case-toolbar">
+
+<input
+id="caseSearch"
+type="text"
+placeholder="Search case or client..."
+oninput="filterCases()">
+
+<select id="statusFilter" onchange="filterCases()">
+<option value="">All Status</option>
+<option value="In Progress">In Progress</option>
+<option value="Pending">Pending</option>
+<option value="Hearing">Hearing</option>
+<option value="Closed">Closed</option>
+</select>
+
+<select id="typeFilter" onchange="filterCases()">
+<option value="">All Case Types</option>
+<option value="Family Law">Family Law</option>
+<option value="Criminal Law">Criminal Law</option>
+<option value="Civil Litigation">Civil Litigation</option>
+<option value="Corporate Law">Corporate Law</option>
+<option value="Property Law">Property Law</option>
+<option value="Taxation">Taxation</option>
+<option value="Other">Other</option>
+</select>
+
+</div>
+
+</div>
+
+
+<div class="tablewrap">
+
+<table class="table">
+
+<thead>
+<tr>
+<th>Case ID</th>
+<th>Client</th>
+<th>Case Type</th>
+<th>Status</th>
+<th>Next Hearing</th>
+<th>Priority</th>
+<th>Action</th>
+</tr>
+</thead>
+
+<tbody id="casesTable"></tbody>
+
+</table>
+
+</div>
+
+</section>
+
+
+<!-- CASE INFORMATION -->
+
+<section class="panel" style="margin-top:20px">
+
+<div class="panelhead">
+
+<h2>Case Management</h2>
+
+<span class="muted">
+Select a case to view complete information
+</span>
+
+</div>
+
+<div class="panelbody">
+
+<p class="muted">
+From the Actions menu you can view case details, edit information,
+change status or delete a case.
+</p>
+
+</div>
+
+</section>
+
+</div>
+
+</main>
+
+</div>
+
+
+<!-- =========================
+     MOBILE BAR
+========================= -->
+
+<div class="mobilebar">
+
+<a class="btn" href="dashboard.html">
+Dashboard
+</a>
+
+<button class="btn gold" onclick="openCaseForm()">
+＋ Case
+</button>
+
+<a class="btn" href="#" onclick="portalLogout();return false">
+Logout
+</a>
+
+</div>
+
+
+<!-- =========================
+     ADD / EDIT CASE MODAL
+========================= -->
+
+<div class="modal" id="caseModal">
+
+<div class="modal-box">
+
+<div class="modal-head">
+
+<h2 id="modalTitle">Add New Case</h2>
+
+<button class="close-btn" onclick="closeModal('caseModal')">
+×
+</button>
+
+</div>
+
+
+<form id="caseForm" onsubmit="saveCase(event)">
+
+<div class="modal-body">
+
+<input type="hidden" id="editCaseId">
+
+
+<div class="form-grid">
+
+<div class="form-group">
+<label>Client Name *</label>
+<input id="clientName" required placeholder="Client full name">
+</div>
+
+
+<div class="form-group">
+<label>Case Type *</label>
+
+<select id="caseType" required>
+
+<option value="">Select case type</option>
+<option>Family Law</option>
+<option>Criminal Law</option>
+<option>Civil Litigation</option>
+<option>Corporate Law</option>
+<option>Property Law</option>
+<option>Taxation</option>
+<option>Other</option>
+
+</select>
+
+</div>
+
+
+<div class="form-group">
+<label>Case Number</label>
+<input id="caseNumber" placeholder="e.g. C-2026-001">
+</div>
+
+
+<div class="form-group">
+<label>Court Name</label>
+<input id="courtName" placeholder="Court / Tribunal name">
+</div>
+
+
+<div class="form-group">
+<label>Filing Date</label>
+<input id="filingDate" type="date">
+</div>
+
+
+<div class="form-group">
+<label>Next Hearing</label>
+<input id="nextHearing" type="datetime-local">
+</div>
+
+
+<div class="form-group">
+<label>Status *</label>
+
+<select id="caseStatus" required>
+
+<option>Pending</option>
+<option>In Progress</option>
+<option>Hearing</option>
+<option>Closed</option>
+
+</select>
+
+</div>
+
+
+<div class="form-group">
+<label>Priority</label>
+
+<select id="priority">
+
+<option>Normal</option>
+<option>High</option>
+<option>Urgent</option>
+
+</select>
+
+</div>
+
+
+<div class="form-group">
+<label>Opposing Party</label>
+<input id="opposingParty" placeholder="Opposing party name">
+</div>
+
+
+<div class="form-group">
+<label>Opposing Lawyer</label>
+<input id="opposingLawyer" placeholder="Opposing lawyer">
+</div>
+
+
+<div class="form-group">
+<label>Client Phone</label>
+<input id="clientPhone" placeholder="+92 3xx xxxxxxx">
+</div>
+
+
+<div class="form-group">
+<label>Client Email</label>
+<input id="clientEmail" type="email" placeholder="client@example.com">
+</div>
+
+
+<div class="form-group full">
+<label>Case Description</label>
+
+<textarea id="caseDescription"
+placeholder="Write complete case description..."></textarea>
+
+</div>
+
+
+<div class="form-group full">
+<label>Internal Notes</label>
+
+<textarea id="caseNotes"
+placeholder="Private notes about this case..."></textarea>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="modal-footer">
+
+<button type="button"
+class="btn light"
+onclick="closeModal('caseModal')">
+Cancel
+</button>
+
+<button type="submit"
+class="btn gold">
+Save Case
+</button>
+
+</div>
+
+</form>
+
+</div>
+
+</div>
+
+
+<!-- =========================
+     VIEW CASE MODAL
+========================= -->
+
+<div class="modal" id="viewModal">
+
+<div class="modal-box">
+
+<div class="modal-head">
+
+<h2>Case Details</h2>
+
+<button class="close-btn" onclick="closeModal('viewModal')">
+×
+</button>
+
+</div>
+
+<div class="modal-body" id="caseDetails"></div>
+
+</div>
+
+</div>
+
+
+<script src="portal.js"></script>
+
+
+<script>
+
+/* ==========================================
+   DEMO CASE DATABASE
+========================================== */
+
+let cases = JSON.parse(localStorage.getItem("legalChoiceCases") || "null");
+
+if(!cases){
+
+cases = [
+
+{
+id:"C001",
+client:"Ayesha Khan",
+type:"Family Law",
+status:"In Progress",
+date:"2026-09-18",
+hearing:"2026-09-25T10:00",
+priority:"High",
+caseNumber:"C-2026-001",
+court:"Family Court Islamabad",
+opposingParty:"Ahmed Khan",
+opposingLawyer:"Adv. Bilal Ahmed",
+phone:"+92 300 1111111",
+email:"ayesha@example.com",
+description:"Family matter requiring legal representation and court proceedings.",
+notes:"Prepare documents before next hearing.",
+history:[
+{date:"2026-09-18",title:"Case Created",text:"Case was added to the portal."},
+{date:"2026-09-19",title:"Documents Reviewed",text:"Initial documents reviewed."}
+]
+},
+
+{
+id:"C002",
+client:"Ali Raza",
+type:"Criminal Law",
+status:"Hearing",
+date:"2026-09-16",
+hearing:"2026-09-22T14:00",
+priority:"Urgent",
+caseNumber:"CR-2026-002",
+court:"Sessions Court Islamabad",
+opposingParty:"State",
+opposingLawyer:"State Counsel",
+phone:"+92 301 2222222",
+email:"ali@example.com",
+description:"Criminal matter currently proceeding through court hearings.",
+notes:"Review evidence before hearing.",
+history:[
+{date:"2026-09-16",title:"Case Created",text:"Case opened."},
+{date:"2026-09-20",title:"Hearing Scheduled",text:"Next hearing scheduled."}
+]
+},
+
+{
+id:"C003",
+client:"Sara Malik",
+type:"Civil Litigation",
+status:"Pending",
+date:"2026-09-20",
+hearing:"2026-09-28T11:00",
+priority:"Normal",
+caseNumber:"CV-2026-003",
+court:"Civil Court Islamabad",
+opposingParty:"Usman Malik",
+opposingLawyer:"Adv. Hamza",
+phone:"+92 302 3333333",
+email:"sara@example.com",
+description:"Civil litigation matter.",
+notes:"Awaiting additional documents.",
+history:[
+{date:"2026-09-20",title:"Case Created",text:"New case added."}
+]
+},
+
+{
+id:"C004",
+client:"Usman Ahmed",
+type:"Corporate Law",
+status:"In Progress",
+date:"2026-09-17",
+hearing:"2026-09-26T15:30",
+priority:"Normal",
+caseNumber:"CO-2026-004",
+court:"High Court Islamabad",
+opposingParty:"ABC Holdings",
+opposingLawyer:"Adv. Kamran",
+phone:"+92 303 4444444",
+email:"usman@example.com",
+description:"Corporate legal matter involving business documentation.",
+notes:"Review corporate agreements.",
+history:[
+{date:"2026-09-17",title:"Case Created",text:"Corporate matter opened."}
+]
+},
+
+{
+id:"C005",
+client:"Fatima Noor",
+type:"Family Law",
+status:"Closed",
+date:"2026-09-12",
+hearing:"",
+priority:"Normal",
+caseNumber:"C-2026-005",
+court:"Family Court Islamabad",
+opposingParty:"N/A",
+opposingLawyer:"N/A",
+phone:"+92 304 5555555",
+email:"fatima@example.com",
+description:"Family law matter successfully completed.",
+notes:"Case closed.",
+history:[
+{date:"2026-09-12",title:"Case Closed",text:"Matter completed and closed."}
+]
+}
+
+];
+
+localStorage.setItem("legalChoiceCases",JSON.stringify(cases));
+
+}
+
+
+/* ==========================================
+   LOAD CASES
+========================================== */
+
+function loadCases(){
+
+updateStats();
+renderCases(cases);
+
+}
+
+
+/* ==========================================
+   RENDER CASES
+========================================== */
+
+function renderCases(list){
+
+const tbody=document.getElementById("casesTable");
+
+tbody.innerHTML="";
+
+if(!list.length){
+
+tbody.innerHTML=`
+<tr>
+<td colspan="7">
+<div class="case-empty">
+<h3>No cases found</h3>
+<p>Try another search or add a new case.</p>
+</div>
+</td>
+</tr>
+`;
+
+return;
+
+}
+
+
+list.forEach(c=>{
+
+let badge="blue";
+
+if(c.status==="Pending") badge="orange";
+if(c.status==="Hearing") badge="purple";
+if(c.status==="Closed") badge="green";
+
+let priorityBadge="";
+
+if(c.priority==="Urgent"){
+priorityBadge='<span class="badge orange">Urgent</span>';
+}
+else if(c.priority==="High"){
+priorityBadge='<span class="badge purple">High</span>';
+}
+else{
+priorityBadge='<span class="badge blue">Normal</span>';
+}
+
+let hearing=c.hearing
+?formatDateTime(c.hearing)
+:"—";
+
+
+tbody.innerHTML+=`
+
+<tr>
+
+<td><strong>#${escapeHTML(c.id)}</strong></td>
+
+<td>${escapeHTML(c.client)}</td>
+
+<td>${escapeHTML(c.type)}</td>
+
+<td>
+<span class="badge ${badge}">
+${escapeHTML(c.status)}
+</span>
+</td>
+
+<td>${hearing}</td>
+
+<td>${priorityBadge}</td>
+
+<td>
+
+<div class="case-actions">
+
+<button class="icon-btn"
+title="View"
+onclick="viewCase('${c.id}')">
+👁
+</button>
+
+<button class="icon-btn"
+title="Edit"
+onclick="editCase('${c.id}')">
+✏
+</button>
+
+<button class="icon-btn"
+title="Delete"
+onclick="deleteCase('${c.id}')">
+🗑
+</button>
+
+</div>
+
+</td>
+
+</tr>
+
+`;
+
+});
+
+}
+
+
+/* ==========================================
+   FILTER
+========================================== */
+
+function filterCases(){
+
+const search=document
+.getElementById("caseSearch")
+.value
+.toLowerCase()
+.trim();
+
+const status=document
+.getElementById("statusFilter")
+.value;
+
+const type=document
+.getElementById("typeFilter")
+.value;
+
+const filtered=cases.filter(c=>{
+
+const matchesSearch=
+!search ||
+c.id.toLowerCase().includes(search) ||
+c.client.toLowerCase().includes(search) ||
+c.type.toLowerCase().includes(search) ||
+c.caseNumber.toLowerCase().includes(search);
+
+const matchesStatus=
+!status || c.status===status;
+
+const matchesType=
+!type || c.type===type;
+
+return matchesSearch && matchesStatus && matchesType;
+
+});
+
+renderCases(filtered);
+
+}
+
+
+/* ==========================================
+   TOP SEARCH
+========================================== */
+
+function searchCases(value){
+
+document.getElementById("caseSearch").value=value;
+
+filterCases();
+
+}
+
+
+/* ==========================================
+   STATS
+========================================== */
+
+function updateStats(){
+
+document.getElementById("totalCases").textContent=cases.length;
+
+document.getElementById("activeCases").textContent=
+cases.filter(c=>c.status==="In Progress" || c.status==="Hearing").length;
+
+document.getElementById("pendingCases").textContent=
+cases.filter(c=>c.status==="Pending").length;
+
+document.getElementById("closedCases").textContent=
+cases.filter(c=>c.status==="Closed").length;
+
+}
+
+
+/* ==========================================
+   OPEN ADD FORM
+========================================== */
+
+function openCaseForm(){
+
+document.getElementById("caseForm").reset();
+
+document.getElementById("editCaseId").value="";
+
+document.getElementById("modalTitle").textContent="Add New Case";
+
+document.getElementById("caseModal").classList.add("show");
+
+}
+
+
+/* ==========================================
+   EDIT CASE
+========================================== */
+
+function editCase(id){
+
+const c=cases.find(x=>x.id===id);
+
+if(!c)return;
+
+document.getElementById("editCaseId").value=c.id;
+
+document.getElementById("clientName").value=c.client;
+
+document.getElementById("caseType").value=c.type;
+
+document.getElementById("caseNumber").value=c.caseNumber;
+
+document.getElementById("courtName").value=c.court;
+
+document.getElementById("filingDate").value=c.date;
+
+document.getElementById("nextHearing").value=c.hearing;
+
+document.getElementById("caseStatus").value=c.status;
+
+document.getElement
