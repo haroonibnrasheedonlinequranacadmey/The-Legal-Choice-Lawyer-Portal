@@ -612,7 +612,7 @@ THE LEGAL CHOICE · Advocates & Legal Consultants
 </span>
 
 <span>
-Mon–Sat · 8:00 AM–6:00 PM · Pindi Gheb | Rawalpindi | Abbottabad
+Mon–Sat · 8:00 AM–6:00 PM · Judicial Complex Rawalpindi
 </span>
 
 </div>
@@ -1143,8 +1143,8 @@ Call: 0315-5729250
 </p>
 
 <p>
-<a href="mailto:Safir4744@gmail.com">
-Safir4744@gmail.com
+<a href="mailto:safir4744@gmail.com">
+safir4744@gmail.com
 </a>
 </p>
 
@@ -1158,11 +1158,7 @@ Office
 </h3>
 
 <p>
-Ali Block, Office No. 2
-</p>
-
-<p>
-Pindi Gheb · Rawalpindi · Abbottabad
+Judicial Complex Rawalpindi, near Post Office, Ali Block, Chamber No. 2
 </p>
 
 <p>
@@ -1200,14 +1196,11 @@ Professional legal information website
 
 <script>
 
-
 const CHAT_SUPABASE_URL =
 "https://ibzxisfangonytpknthu.supabase.co";
 
-
 const CHAT_SUPABASE_KEY =
 "sb_publishable_S0YKbX1MIaBB9HxL5KoEAw_X0mymq8q";
-
 
 const legalChatSupabase =
 window.supabase.createClient(
@@ -1236,13 +1229,11 @@ document
 
 async function sendLegalChat(){
 
-
 const name =
 document
 .getElementById("visitorName")
 .value
 .trim();
-
 
 const contact =
 document
@@ -1250,17 +1241,14 @@ document
 .value
 .trim();
 
-
 const message =
 document
 .getElementById("visitorMessage")
 .value
 .trim();
 
-
 const errorBox =
 document.getElementById("chatError");
-
 
 const sendButton =
 document.getElementById("chatSendButton");
@@ -1282,17 +1270,14 @@ return;
 errorBox.style.display =
 "none";
 
-
 sendButton.disabled =
 true;
-
 
 sendButton.textContent =
 "Sending...";
 
 
 try{
-
 
 const {error} =
 await legalChatSupabase
@@ -1343,7 +1328,6 @@ document
 .style.display =
 "none";
 
-
 document
 .getElementById("chatSuccess")
 .style.display =
@@ -1353,25 +1337,19 @@ document
 }
 catch(error){
 
-
 console.error(error);
-
 
 errorBox.textContent =
 "Something went wrong. Please try again.";
 
-
 errorBox.style.display =
 "block";
-
 
 sendButton.disabled =
 false;
 
-
 sendButton.textContent =
 "Send Message";
-
 
 }
 
@@ -1380,21 +1358,17 @@ sendButton.textContent =
 
 function resetLegalChat(){
 
-
 document.getElementById(
 "visitorName"
 ).value="";
-
 
 document.getElementById(
 "visitorContact"
 ).value="";
 
-
 document.getElementById(
 "visitorMessage"
 ).value="";
-
 
 document.getElementById(
 "chatError"
@@ -1407,10 +1381,8 @@ document.getElementById(
 "chatSendButton"
 );
 
-
 sendButton.disabled =
 false;
-
 
 sendButton.textContent =
 "Send Message";
@@ -1421,12 +1393,10 @@ document.getElementById(
 ).style.display=
 "none";
 
-
 document.getElementById(
 "legalChatForm"
 ).style.display=
 "block";
-
 
 }
 
@@ -1444,8 +1414,7 @@ closeLegalChat();
 }
 );
 
-
 </script>
 
 </body>
-  </html>
+</html>
